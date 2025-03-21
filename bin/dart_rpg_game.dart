@@ -21,9 +21,47 @@ void main() {
     int.parse(charStats[2]),
   );
 
-  print("캐릭터 이름 : ${char.name} 체력 : ${char.hp} 공격력 : ${char.attackPower} 방어력 : ${char.def}");
+  print(
+    "캐릭터 이름 : ${char.name} 체력 : ${char.hp} 공격력 : ${char.attackPower} 방어력 : ${char.def}",
+  );
 
   // 1-2 monsters.txt 에서 이름, 체력, 공격력 최대값 읽어오기
+  final monsterFile = File('assets/monsters.txt');
+  String monsterString = monsterFile.readAsStringSync();
+  print(monsterString);
+  // Batman,30,20
+  // Spiderman,20,30
+  // Superman,30,10
+
+  // 몬스터 가공하기 1 : 줄별로 분리하기
+  List<String> monsterLines = monsterString.split('\n');
+  print(monsterLines);
+  // [Batman,30,20, Spiderman,20,30, Superman,30,10]
+
+  List<Monster> monsters = [];
+  print("몬스터 리스트 갯수 : ${monsters.length}");
+
+  // 몬스터 가공하기 2 : 각 줄별로 이름, 체력, 공격력 최대값 분리하기
+  // for문 (변수 선언 ; 조건문 ; 중괄호 끝나고 실행할 코드){}
+  for (var i = 0; i < monsterLines.length; i++) {
+    String line = monsterLines[i];
+    print(line);
+
+    // 몬스터이름, 몬스터 체력, 최대공격력 형태로 되어있는 line 각각 분리하기
+    // => 콤마단위로 분리
+    List<String> monsterInfos = line.split(',');
+    print(monsterInfos);
+    // [Superman, 30, 10]
+    Monster monster = Monster(
+      monsterInfos[0],
+      int.parse(monsterInfos[1]),
+      int.parse(monsterInfos[2]),
+    );
+
+    monsters.add(monster);
+    print("$i 번째 몬스터 : ${monster.name} ${monster.hp} ${monster.maxAttack}");
+  }
+  print("몬스터 리스트 갯수 : ${monsters.length}");
   //2. 사용자로부터 캐릭터 이름 입력받기 기능
   //특수문자나 숫자가 포함되지 않아야함
   //3. 게임 종료 후 결과를 파일에 저장
